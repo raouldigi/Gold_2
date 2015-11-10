@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <constant name="struts.devMode" value="false" />
+    <constant name="struts.multipart.maxSize" value="1000000" />
+    
+
+    <!-- Configuration for the default package. -->
+    <package name="java" extends="struts-default">
+
+        <global-results>
+            <result name="dberror">/error.jsp</result>
+        </global-results>
+ 
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.Exception" result="error"/>
+        </global-exception-mappings>
+
+        <action name="login">
+            <result>login.jsp</result>
+        </action>
+ 
+        <action name="loginprocess" class="action.LoginAction">
+            <result name="success" type="dispatcher">lista_dipendenti.jsp</result>
+            <result name="error" type="dispatcher">loginerror.jsp</result>
+            <result name="dberror" type="dispatcher">dberror.jsp</result>
+            <result name="logout" type="dispatcher">login.jsp</result>
+        </action>
+        
+        <action name="search" class="action.SearchAction">
+            <result name="success" type="dispatcher">lista_dipendenti.jsp</result>
+            <result name="error" type="dispatcher">error.jsp</result>
+        </action>
+        
+        <action name="salvaFoglio" class="action.SalvaFoglioPresenzeAction" >
+            <result name="ddl">/JSP_fogliopresenza_2_ddl.jsp</result>
+            <result name="acli">/JSP_fogliopresenza_2.jsp</result>
+            <result name="error">/error.jsp</result>
+        </action>
+        
+        <action name="aggiornaStatoFoglio" class="action.AggiornaStatoFoglioPresenzeAction" >
+            <result name="ddl">/JSP_fogliopresenza_2_ddl.jsp</result>
+            <result name="acli">/JSP_fogliopresenza_2.jsp</result>
+            <result name="error">/error.jsp</result>
+        </action>
+        
+        <action name="anagraficadatorilavoro" class="action.ListeDdlDipeAction" method="getTabellaDatori">
+            <result name="success">/anagrafica_ddl.jsp</result>
+            <result name="error">/error.jsp</result>
+        </action>
+        <action name="anagraficadipendenti" class="action.ListeDdlDipeAction" method="getTabellaDipendenti">
+            <result name="success">/anagrafica_dipe.jsp</result>
+            <result name="error">/error.jsp</result>
+        </action>
+        
+        <action name="fogliriepilogativi" class="action.ListeDdlDipeAction" method="getTabellaDatoriContratti">
+            <result name="success">foglio_riepilogativo.jsp</result>
+            <result name="error">error.jsp</result>
+        </action>
+        <action name="updateFoglioR" class="action.FoglioRiepilogativoAction">
+            <result name="input">foglio_riepilogativo.jsp</result>
+            <result name="success">foglio_riepilogativo_result.jsp</result>
+            <result name="error">error.jsp</result>
+        </action>
+        
+        <action name="updateanagraficaddl" class="action.AnagraficaDdlAction">
+            <result name="input">anagrafica_ddl.jsp</result>
+            <result name="success"> anagrafica_ddl.jsp </result>
+            <result name="error"> error.jsp </result>
+        </action>
+        <action name="updateanagraficadipendenti" class="action.AnagraficaDipeAction">
+            <result name="input">anagrafica_dipe.jsp</result>
+            <result name="success">contratto.jsp</result>
+            <result name="error">error.jsp</result>
+        </action>
+        
+        <action name="searchprocess" class="action.SelectOperator" >
+            <result name="error" type="redirectAction">loginprocess</result>
+            <result name="success">/loginsuccess.jsp</result>
+        </action>
+        
+        <action name="foglioPresenze" class="action.FoglioPresenzeAction" >
+            <result name="ddl">/JSP_fogliopresenza_2_ddl.jsp</result>
+            <result name="acli">/JSP_fogliopresenza_2.jsp</result>
+            <result name="error" type="redirectAction">searchprocess</result>
+            <result name="confirm">loginsuccess.jsp</result>
+        </action>
+    
+        <action name="updateDay" class="action.UpdateDayAction" >
+            <result name="ddl">/JSP_fogliopresenza_2_ddl.jsp</result>
+            <result name="acli">/JSP_fogliopresenza_2.jsp</result>
+            <result name="error">/error.jsp</result>
+        </action>
+        <action name="updatecontratto" class="action.ContrattoAction" >
+            <result name="input">contratto.jsp</result>
+            <result name="success">anagrafica_dipe.jsp</result>
+            <result name="error">error.jsp</result>
+        </action>
+        <action name="insertValueDay" class="action.InsertValueDayAction" >
+            <result name="ddl">/JSP_fogliopresenza_2_ddl.jsp</result>
+            <result name="acli">/JSP_fogliopresenza_2.jsp</result>
+            <result name="error">/error.jsp</result>
+        </action>
+        <action name="contrattoaction" class="action.AnagraficaDipeAction">
+            <result name="input">anagrafica_dipe.jsp</result>
+            <result name="success">contratto.jsp</result>
+            <result name="error">error.jsp</result>
+        </action>
+        <action name="contratto">
+            <result>contratto.jsp</result>
+        </action>
+        <action name="upload" class="action.UploadFile">
+			
+            <interceptor-ref name="fileUpload">
+                <param name="allowedTypes">
+                    text/plain,
+                    application/pdf,
+                    application/word,
+                    application/msword,             
+                    application/vnd.ms-excel,
+                    application/msexcel,
+                    application/x-msexcel,
+                    application/x-ms-excel,
+                    application/x-excel,
+                    application/x-dos_ms_excel,
+                    application/xls,
+                    application/x-xls,
+                    application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+                    application/vnd.openxmlformats-officedocument.wordprocessingml.document
+                </param>
+                <param name="allowedExtensions">pdf,xls,doc,docx,xlsx,txt</param>
+            </interceptor-ref>
+            <interceptor-ref name="basicStack"></interceptor-ref>
+            <result name="ddl">/JSP_fogliopresenza_2_ddl.jsp</result>
+            <result name="acli">/JSP_fogliopresenza_2.jsp</result>
+            <result name="error">/error.jsp</result>
+        </action>
+   
+        <!--<action name="logout" class="src.java.LoginAction" method="logout">
+            <result name="success" type="dispatcher">../logoutsuccess.jsp</result>
+        </action> -->
+       
+    </package>
+
+</struts>
